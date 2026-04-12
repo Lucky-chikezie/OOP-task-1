@@ -1,0 +1,68 @@
+// Abstraction + Encapsulation
+class Book {
+  #isAvailable = true; // this is the private field representing the encapsulation and abstraction phase.
+  constructor(title, author) {
+    this.title = title;
+    this.author = author;
+  }
+  borrow() {
+    if (this.#isAvailable) return this.#isAvailable = false;
+  }
+  return() { 
+    this.#isAvailable = true; 
+  }
+  isAvailable() { 
+    return this.#isAvailable; 
+  }
+}
+
+// Inheritance
+class Person {
+  constructor(name) { 
+    this.name = name;
+  }
+  role() {
+    return "Person"; 
+  }
+}
+
+class Student extends Person {
+  constructor(name) { 
+    super(name); this.borrowed = []; 
+  }
+  borrowedBook(book) {
+    if (book.borrow()) { 
+        this.borrowed.push(book); 
+        console.log(`${this.name} borrowed ${book.title}`); 
+    }
+    else console.log(`${book.title} is not available in the library currently`);
+  }
+  returnedBook(book) { 
+    book.return(); 
+    this.borrowed = this.borrowed.filter(b => b !== book); 
+  }
+  role() { 
+    return "Student"; 
+  } // this is representing Polymorphism
+}
+
+class activeStudent extends Student {
+  borrowedBook(book) { 
+    console.log(`${this.name} (active)`); 
+    super.borrowedBook(book); 
+  }
+  role() { 
+    return "activeStudent"; 
+  } // Polymorphism
+}
+
+// Testing testing the whole thing "God Abeg"
+const book1 = new Book("Math101", "Prof.Eze");
+const lucky = new Student("Lucky");
+const ada = new activeStudent("Ada");
+
+lucky.borrowedBook(book1);   // Lucky borrows
+lucky.returnedBook(book1);   // Lucky returns
+ada.borrowedBook(book1);    // Ada borrows
+console.log(lucky.role()); // for student
+console.log(ada.role());  // for activeStudent
